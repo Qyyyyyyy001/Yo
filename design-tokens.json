@@ -1,0 +1,131 @@
+{
+  "$schema": "https://schemas.amdrs.dev/design-tokens/v1.json",
+  "name": "apple-design-system",
+  "version": "1.0.0",
+  "description": "Design tokens derived from Apple Human Interface Guidelines (SF type ramp, system colors, 4pt grid).",
+
+  "color": {
+    "system": {
+      "blue":   { "value": "#0071e3", "type": "color" },
+      "indigo": { "value": "#5856d6", "type": "color" },
+      "purple": { "value": "#af52de", "type": "color" },
+      "pink":   { "value": "#ff2d55", "type": "color" },
+      "red":    { "value": "#ff3b30", "type": "color" },
+      "orange": { "value": "#ff9500", "type": "color" },
+      "yellow": { "value": "#ffcc00", "type": "color" },
+      "green":  { "value": "#34c759", "type": "color" },
+      "mint":   { "value": "#00c7be", "type": "color" },
+      "teal":   { "value": "#30b0c7", "type": "color" },
+      "cyan":   { "value": "#32ade6", "type": "color" },
+      "brown":  { "value": "#a2845e", "type": "color" }
+    },
+    "gray": {
+      "1": { "value": "#8e8e93", "type": "color" },
+      "2": { "value": "#aeaeb2", "type": "color" },
+      "3": { "value": "#c7c7cc", "type": "color" },
+      "4": { "value": "#d1d1d6", "type": "color" },
+      "5": { "value": "#e5e5ea", "type": "color" },
+      "6": { "value": "#f2f2f7", "type": "color" }
+    },
+    "semantic": {
+      "light": {
+        "bg-primary":     { "value": "#f5f5f7", "type": "color" },
+        "bg-secondary":   { "value": "#ffffff", "type": "color" },
+        "bg-tertiary":    { "value": "#f2f2f7", "type": "color" },
+        "text-primary":   { "value": "#1d1d1f", "type": "color" },
+        "text-secondary": { "value": "#86868b", "type": "color" },
+        "text-tertiary":  { "value": "#aeaeb2", "type": "color" },
+        "accent":         { "value": "{color.system.blue}", "type": "color" },
+        "success":        { "value": "{color.system.green}", "type": "color" },
+        "warning":        { "value": "{color.system.orange}", "type": "color" },
+        "danger":         { "value": "{color.system.red}", "type": "color" },
+        "separator":      { "value": "rgba(60, 60, 67, 0.12)", "type": "color" }
+      },
+      "dark": {
+        "bg-primary":     { "value": "#000000", "type": "color" },
+        "bg-secondary":   { "value": "#1c1c1e", "type": "color" },
+        "bg-tertiary":    { "value": "#2c2c2e", "type": "color" },
+        "text-primary":   { "value": "#f5f5f7", "type": "color" },
+        "text-secondary": { "value": "#98989d", "type": "color" },
+        "text-tertiary":  { "value": "#636366", "type": "color" },
+        "accent":         { "value": "#0a84ff", "type": "color" },
+        "success":        { "value": "#30d158", "type": "color" },
+        "warning":        { "value": "#ff9f0a", "type": "color" },
+        "danger":         { "value": "#ff453a", "type": "color" },
+        "separator":      { "value": "rgba(84, 84, 88, 0.65)", "type": "color" }
+      }
+    }
+  },
+
+  "typography": {
+    "font-family": {
+      "sans":    { "value": "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif", "type": "fontFamily" },
+      "mono":    { "value": "'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace", "type": "fontFamily" },
+      "rounded": { "value": "ui-rounded, 'SF Pro Rounded', -apple-system, system-ui, sans-serif", "type": "fontFamily" }
+    },
+    "font-size": {
+      "large-title": { "value": "34px", "type": "dimension" },
+      "title-1":     { "value": "28px", "type": "dimension" },
+      "title-2":     { "value": "22px", "type": "dimension" },
+      "title-3":     { "value": "20px", "type": "dimension" },
+      "headline":    { "value": "17px", "type": "dimension" },
+      "body":        { "value": "17px", "type": "dimension" },
+      "callout":     { "value": "16px", "type": "dimension" },
+      "subhead":     { "value": "15px", "type": "dimension" },
+      "footnote":    { "value": "13px", "type": "dimension" },
+      "caption-1":   { "value": "12px", "type": "dimension" },
+      "caption-2":   { "value": "11px", "type": "dimension" }
+    },
+    "font-weight": {
+      "regular":  { "value": 400, "type": "fontWeight" },
+      "medium":   { "value": 500, "type": "fontWeight" },
+      "semibold": { "value": 600, "type": "fontWeight" },
+      "bold":     { "value": 700, "type": "fontWeight" }
+    }
+  },
+
+  "spacing": {
+    "1":  { "value": "4px",  "type": "dimension" },
+    "2":  { "value": "8px",  "type": "dimension" },
+    "3":  { "value": "12px", "type": "dimension" },
+    "4":  { "value": "16px", "type": "dimension" },
+    "5":  { "value": "20px", "type": "dimension" },
+    "6":  { "value": "24px", "type": "dimension" },
+    "7":  { "value": "32px", "type": "dimension" },
+    "8":  { "value": "40px", "type": "dimension" },
+    "9":  { "value": "48px", "type": "dimension" },
+    "10": { "value": "64px", "type": "dimension" }
+  },
+
+  "radius": {
+    "xs":   { "value": "4px",   "type": "dimension" },
+    "sm":   { "value": "8px",   "type": "dimension" },
+    "md":   { "value": "12px",  "type": "dimension" },
+    "lg":   { "value": "16px",  "type": "dimension" },
+    "xl":   { "value": "20px",  "type": "dimension" },
+    "2xl":  { "value": "28px",  "type": "dimension" },
+    "full": { "value": "9999px","type": "dimension" }
+  },
+
+  "shadow": {
+    "xs": { "value": "0 1px 2px rgba(0,0,0,0.04)", "type": "shadow" },
+    "sm": { "value": "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)", "type": "shadow" },
+    "md": { "value": "0 4px 14px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04)", "type": "shadow" },
+    "lg": { "value": "0 8px 28px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)", "type": "shadow" },
+    "xl": { "value": "0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06)", "type": "shadow" }
+  },
+
+  "motion": {
+    "duration": {
+      "fast": { "value": "150ms", "type": "duration" },
+      "base": { "value": "250ms", "type": "duration" },
+      "slow": { "value": "400ms", "type": "duration" }
+    },
+    "easing": {
+      "standard": { "value": "cubic-bezier(0.4, 0.0, 0.2, 1)",  "type": "cubicBezier" },
+      "entrance": { "value": "cubic-bezier(0.0, 0.0, 0.2, 1)",  "type": "cubicBezier" },
+      "exit":     { "value": "cubic-bezier(0.4, 0.0, 1, 1)",    "type": "cubicBezier" },
+      "spring":   { "value": "cubic-bezier(0.34, 1.56, 0.64, 1)","type": "cubicBezier" }
+    }
+  }
+}
