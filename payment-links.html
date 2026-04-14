@@ -117,7 +117,8 @@
         letter-spacing: -0.1px;
         transition: background var(--duration-fast) var(--ease-standard);
     }
-    .gp-nav:hover { background: var(--bg-tertiary); }
+    .gp-nav:not(.gp-active):hover { background: var(--bg-tertiary); }
+    .gp-nav.gp-active { cursor: default; }
     .gp-nav svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--apple-gray-1); }
     .gp-nav .gp-chevron {
         margin-left: auto;
