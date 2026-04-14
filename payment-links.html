@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gate Pay · 收款链接（Apple Design）</title>
+<link rel="stylesheet" href="apple-design-system.css">
+<style>
+    /* =========================================================
+     * Page-specific styles built entirely on apple-design-system
+     * tokens (colors, spacing, radius, shadows, typography).
+     * ========================================================= */
+    html, body { height: 100%; }
+    body {
+        background: var(--apple-gray-5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-7);
+    }
+
+    .gp-shell {
+        width: 1440px;
+        max-width: 100%;
+        background: var(--bg-primary);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xl);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ---------- Top bar ---------- */
+    .gp-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 52px;
+        padding: 0 var(--space-5);
+        background: var(--text-primary); /* #1d1d1f */
+        color: #fff;
+    }
+    .gp-logo {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        font-weight: var(--weight-semibold);
+        font-size: var(--text-headline);
+        letter-spacing: -0.2px;
+    }
+    .gp-logo-mark {
+        width: 22px; height: 22px;
+        border-radius: var(--radius-xs);
+        background: linear-gradient(135deg, #4facff, #0071e3);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 13px;
+        font-weight: var(--weight-bold);
+    }
+    .gp-logo small {
+        opacity: .5;
+        font-weight: var(--weight-regular);
+        font-size: var(--text-caption-1);
+        padding-left: var(--space-2);
+        border-left: 1px solid rgba(255,255,255,.15);
+        margin-left: var(--space-1);
+    }
+    .gp-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: var(--space-5);
+        color: rgba(255,255,255,.85);
+        font-size: var(--text-footnote);
+    }
+    .gp-topbar-right .gp-icon-btn {
+        width: 30px; height: 30px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.08);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background var(--duration-fast) var(--ease-standard);
+        color: rgba(255,255,255,.9);
+    }
+    .gp-topbar-right .gp-icon-btn:hover { background: rgba(255,255,255,.16); }
+
+    /* ---------- Body row ---------- */
+    .gp-body {
+        display: flex;
+        min-height: 900px;
+    }
+
+    /* ---------- Sidebar ---------- */
+    .gp-sidebar {
+        width: 232px;
+        flex-shrink: 0;
+        background: var(--bg-secondary);
+        padding: var(--space-4) var(--space-3);
+        border-right: 0.5px solid var(--separator);
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .gp-nav {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: 9px 12px;
+        border-radius: var(--radius-sm);
+        font-size: var(--text-subhead);
+        color: var(--text-primary);
+        cursor: pointer;
+        text-decoration: none;
+        letter-spacing: -0.1px;
+        transition: background var(--duration-fast) var(--ease-standard);
+    }
+    .gp-nav:hover { background: var(--bg-tertiary); }
+    .gp-nav svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--apple-gray-1); }
+    .gp-nav .gp-chevron {
+        margin-left: auto;
+        color: var(--apple-gray-2);
+        font-size: 10px;
+        transition: transform var(--duration-base) var(--ease-standard);
+    }
+    .gp-nav.gp-open .gp-chevron { transform: rotate(180deg); }
+
+    .gp-nav.gp-child {
+        padding-left: 44px;
+        font-size: var(--text-subhead);
+        color: var(--text-secondary);
+        position: relative;
+    }
+    .gp-nav.gp-child::before {
+        content: "";
+        position: absolute;
+        left: 26px; top: 50%;
+        width: 4px; height: 4px;
+        border-radius: 50%;
+        background: var(--apple-gray-3);
+        transform: translateY(-50%);
+    }
+
+    .gp-nav.gp-active {
+        background: rgba(0, 113, 227, 0.10);
+        color: var(--accent);
+        font-weight: var(--weight-semibold);
+    }
+    .gp-nav.gp-active svg { color: var(--accent); }
+    .gp-nav.gp-child.gp-active { color: var(--accent); }
+    .gp-nav.gp-child.gp-active::before { background: var(--accent); }
+
+    /* ---------- Content area ---------- */
+    .gp-content {
+        flex: 1;
+        padding: var(--space-6) var(--space-7) var(--space-7);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-5);
+        min-width: 0;
+    }
+
+    .gp-page-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-1) var(--space-1) 0;
+    }
+    .gp-page-head h1 {
+        margin: 0;
+        font-size: var(--text-title-1);
+        font-weight: var(--weight-bold);
+        letter-spacing: -0.4px;
+        color: var(--text-primary);
+    }
+    .gp-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+    }
+
+    /* ---------- Table card ---------- */
+    .gp-table-card {
+        background: var(--bg-secondary);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+    }
+    .gp-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--text-subhead);
+        color: var(--text-primary);
+    }
+    .gp-table thead th {
+        font-size: var(--text-caption-1);
+        font-weight: var(--weight-semibold);
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        text-align: left;
+        padding: 14px 16px;
+        background: #fafafa;
+        border-bottom: 0.5px solid var(--separator);
+        white-space: nowrap;
+    }
+    .gp-table tbody td {
+        padding: 16px;
+        border-bottom: 0.5px solid var(--separator);
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .gp-table tbody tr:last-child td { border-bottom: none; }
+    .gp-table tbody tr {
+        transition: background var(--duration-fast) var(--ease-standard);
+    }
+    .gp-table tbody tr:hover { background: #fbfbfd; }
+
+    .gp-index {
+        color: var(--text-secondary);
+        font-variant-numeric: tabular-nums;
+        font-weight: var(--weight-medium);
+    }
+    .gp-channel {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+    }
+    .gp-avatar {
+        width: 24px; height: 24px;
+        border-radius: 50%;
+        background: rgba(0, 113, 227, 0.12);
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: var(--weight-semibold);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .gp-date {
+        color: var(--text-secondary);
+        font-variant-numeric: tabular-nums;
+        font-size: var(--text-footnote);
+    }
+    .gp-amount {
+        font-weight: var(--weight-semibold);
+        letter-spacing: -0.2px;
+        font-variant-numeric: tabular-nums;
+    }
+    .gp-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        color: var(--accent);
+        font-weight: var(--weight-medium);
+        text-decoration: none;
+        font-size: var(--text-footnote);
+    }
+    .gp-link .gp-copy {
+        width: 16px; height: 16px;
+        border-radius: var(--radius-xs);
+        background: rgba(0, 113, 227, 0.10);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+    }
+    .gp-link:hover { color: var(--accent-hover); }
+
+    .gp-action {
+        background: none; border: none; padding: 0;
+        font: inherit; cursor: pointer;
+        color: var(--accent);
+        font-weight: var(--weight-semibold);
+        font-size: var(--text-footnote);
+        transition: opacity var(--duration-fast) var(--ease-standard);
+    }
+    .gp-action:hover { opacity: .72; }
+    .gp-action-danger { color: var(--danger); }
+
+    /* Badge tweaks to mirror iOS status pill */
+    .gp-table .apple-badge {
+        padding: 4px 10px;
+        gap: 6px;
+    }
+    .gp-table .apple-badge::before {
+        content: "";
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        display: inline-block;
+    }
+
+    .gp-footer-note {
+        color: var(--text-tertiary);
+        font-size: var(--text-caption-1);
+        padding: var(--space-2) var(--space-1) 0;
+        letter-spacing: 0;
+    }
+
+    /* ---------- Responsive (phone preview) ---------- */
+    @media (max-width: 1100px) {
+        body { padding: var(--space-4); }
+        .gp-shell { width: 100%; }
+        .gp-body { flex-direction: column; min-height: 0; }
+        .gp-sidebar {
+            width: 100%;
+            flex-direction: row;
+            overflow-x: auto;
+            border-right: none;
+            border-bottom: 0.5px solid var(--separator);
+            padding: var(--space-3);
+            gap: var(--space-2);
+        }
+        .gp-nav { flex-shrink: 0; }
+        .gp-nav.gp-child { display: none; }
+        .gp-content { padding: var(--space-5) var(--space-4); }
+        .gp-table-card { overflow-x: auto; }
+    }
+</style>
+</head>
+<body class="apple-light">
+
+<div class="gp-shell">
+
+    <!-- ============ Top bar ============ -->
+    <header class="gp-topbar">
+        <div class="gp-logo">
+            <span class="gp-logo-mark">G</span>
+            Gate Pay
+            <small>商户端</small>
+        </div>
+        <div class="gp-topbar-right">
+            <span>充值</span>
+            <span class="gp-icon-btn" title="消息">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </span>
+            <span class="gp-icon-btn" title="帮助">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5"/></svg>
+            </span>
+            <span class="gp-icon-btn" title="语言">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+            </span>
+            <span class="gp-icon-btn" title="主题">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+            </span>
+            <span class="gp-icon-btn" title="账户">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+        </div>
+    </header>
+
+    <div class="gp-body">
+
+        <!-- ============ Sidebar ============ -->
+        <aside class="gp-sidebar">
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4v-8h-6v8H5a2 2 0 01-2-2z"/></svg>
+                开始使用
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                商家管理平台
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+                交易订单
+                <span class="gp-chevron">▾</span>
+            </a>
+            <a class="gp-nav gp-active gp-open" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                收款
+                <span class="gp-chevron">▾</span>
+            </a>
+            <a class="gp-nav gp-child gp-active" href="#">收款链接</a>
+            <a class="gp-nav gp-child" href="#">静态收款码</a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                账户
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                审核管理
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                开发者中心
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                支付币种配置
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 11h18M12 20V7M12 7C8 3 4 7 12 7s8-4 4 0"/></svg>
+                礼品卡
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+                角色权限管理
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                客服管理
+            </a>
+            <a class="gp-nav" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.4 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.4 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.9.4l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.4-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.4-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.4h.1a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.4l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.4 1.9v.1a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+                白标收银台设置
+            </a>
+        </aside>
+
+        <!-- ============ Content ============ -->
+        <main class="gp-content">
+
+            <div class="gp-page-head">
+                <h1>收款链接</h1>
+                <div class="gp-actions">
+                    <button class="apple-btn apple-btn-secondary">客户通道</button>
+                    <button class="apple-btn apple-btn-primary">
+                        <span style="font-size:14px;line-height:1">＋</span>
+                        新增
+                    </button>
+                </div>
+            </div>
+
+            <div class="gp-table-card">
+                <table class="gp-table">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>客户通道</th>
+                            <th>创建日期</th>
+                            <th>产品名称</th>
+                            <th>支付链接</th>
+                            <th>订单金额</th>
+                            <th>二维码状态</th>
+                            <th>付款按钮</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="gp-index">1</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-04-01 10:04:39</td>
+                            <td>永久</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">1 USDT</td>
+                            <td><span class="apple-badge apple-badge-success">有效 · 永久有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                        <tr>
+                            <td class="gp-index">2</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-03-27 18:29:50</td>
+                            <td>test111</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">33 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效 · 24小时有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                        <tr>
+                            <td class="gp-index">3</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-03-26 12:19:14</td>
+                            <td>111</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">12 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效 · 24小时有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                        <tr>
+                            <td class="gp-index">4</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-03-25 12:11:36</td>
+                            <td>test11</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">1.1 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效 · 24小时有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                        <tr>
+                            <td class="gp-index">5</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-03-24 12:01:09</td>
+                            <td>test2</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">3 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效 · 24小时有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                        <tr>
+                            <td class="gp-index">6</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-03-24 08:44:15</td>
+                            <td>test3</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">1 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效 · 1小时有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                        <tr>
+                            <td class="gp-index">7</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-03-20 22:50:43</td>
+                            <td>1</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">0.88 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效 · 1小时有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                        <tr>
+                            <td class="gp-index">8</td>
+                            <td><span class="gp-channel"><span class="gp-avatar">T</span>test</span></td>
+                            <td class="gp-date">2025-03-20 18:59:36</td>
+                            <td>test</td>
+                            <td><a class="gp-link" href="#">gate.io/pay-code?qrcod… <span class="gp-copy">⧉</span></a></td>
+                            <td class="gp-amount">1 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效 · 1小时有效</span></td>
+                            <td><button class="gp-action">查看二维码</button></td>
+                            <td><button class="gp-action gp-action-danger">删除</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="gp-footer-note">
+                Apple Design System · SF type ramp · 4pt grid · systemBlue accent · 0.5px hairlines
+            </p>
+
+        </main>
+    </div>
+</div>
+
+</body>
+</html>
