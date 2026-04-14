@@ -191,11 +191,18 @@
     .gp-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: var(--text-subhead);
+        font-size: var(--text-footnote); /* unified 13px */
         color: var(--text-primary);
     }
+    /* Force every piece of text inside the table to a single size */
+    .gp-table th,
+    .gp-table td,
+    .gp-table a,
+    .gp-table button,
+    .gp-table span {
+        font-size: var(--text-footnote);
+    }
     .gp-table thead th {
-        font-size: var(--text-caption-1);
         font-weight: var(--weight-semibold);
         color: var(--text-secondary);
         text-transform: uppercase;
