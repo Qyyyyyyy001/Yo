@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="zh-CN" class="apple-light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>收款链接 · Gate Pay</title>
+    <link rel="stylesheet" href="apple-design-system.css">
+    <style>
+        /* =========================================================
+         * Page-only layout glue.
+         * All visual primitives (colors, type, radius, shadow,
+         * buttons, badges, inputs) come from apple-design-system.css.
+         * ========================================================= */
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* ---- App shell -------------------------------------------------- */
+        .app {
+            display: grid;
+            grid-template-columns: 232px 1fr;
+            grid-template-rows: 56px 1fr;
+            grid-template-areas:
+                "topbar  topbar"
+                "sidebar main";
+            min-height: 100vh;
+        }
+
+        /* ---- Top bar ---------------------------------------------------- */
+        .topbar {
+            grid-area: topbar;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-5);
+            background: var(--bg-secondary);
+            border-bottom: 0.5px solid var(--separator);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        .topbar-home {
+            width: 32px; height: 32px;
+            border-radius: var(--radius-sm);
+            display: inline-flex; align-items: center; justify-content: center;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background var(--duration-fast) var(--ease-standard);
+        }
+        .topbar-home:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+        .brand {
+            display: flex; align-items: center; gap: var(--space-2);
+            font-size: var(--text-headline);
+            font-weight: var(--weight-semibold);
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+        .brand-mark {
+            width: 22px; height: 22px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--apple-blue), var(--apple-indigo));
+            box-shadow: 0 2px 6px rgba(0, 113, 227, 0.35);
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: var(--radius-sm);
+            display: inline-flex; align-items: center; justify-content: center;
+            background: transparent; border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background var(--duration-fast) var(--ease-standard),
+                        color var(--duration-fast) var(--ease-standard);
+        }
+        .icon-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+        .icon-btn svg { width: 18px; height: 18px; }
+        .topbar-divider {
+            width: 1px; height: 20px;
+            background: var(--separator);
+            margin: 0 var(--space-2);
+        }
+
+        /* ---- Sidebar ---------------------------------------------------- */
+        .sidebar {
+            grid-area: sidebar;
+            background: var(--bg-secondary);
+            border-right: 0.5px solid var(--separator);
+            padding: var(--space-4) var(--space-3);
+            overflow-y: auto;
+        }
+        .nav { list-style: none; margin: 0; padding: 0; }
+        .nav-item { margin-bottom: 2px; }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: 9px var(--space-3);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: var(--text-subhead);
+            font-weight: var(--weight-regular);
+            text-decoration: none;
+            cursor: pointer;
+            transition: background var(--duration-fast) var(--ease-standard),
+                        color var(--duration-fast) var(--ease-standard);
+            user-select: none;
+        }
+        .nav-link svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--text-secondary); }
+        .nav-link:hover { background: var(--bg-tertiary); }
+        .nav-link.is-active {
+            background: rgba(0, 113, 227, 0.10);
+            color: var(--accent);
+            font-weight: var(--weight-semibold);
+        }
+        .nav-link.is-active svg { color: var(--accent); }
+        .nav-group-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: 9px var(--space-3);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: var(--text-subhead);
+            font-weight: var(--weight-medium);
+            cursor: pointer;
+        }
+        .nav-group-toggle svg.lead { width: 16px; height: 16px; color: var(--text-secondary); }
+        .nav-group-toggle .chev { margin-left: auto; width: 12px; height: 12px; color: var(--text-tertiary); transform: rotate(90deg); }
+        .nav-group-toggle:hover { background: var(--bg-tertiary); }
+        .nav-sub {
+            list-style: none;
+            margin: 2px 0 var(--space-2) 0;
+            padding: 0 0 0 var(--space-7);
+        }
+        .nav-sub .nav-link { font-size: var(--text-footnote); padding: 7px var(--space-3); }
+
+        /* ---- Main ------------------------------------------------------- */
+        .main {
+            grid-area: main;
+            padding: var(--space-7) var(--space-7) var(--space-9);
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        .page-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-6);
+        }
+        .page-head h1 {
+            margin: 0;
+            font-size: var(--text-title-1);
+            font-weight: var(--weight-bold);
+            letter-spacing: -0.4px;
+            color: var(--text-primary);
+        }
+        .page-actions { display: flex; gap: var(--space-3); }
+
+        /* ---- Table card ------------------------------------------------- */
+        .table-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 0.5px solid var(--separator);
+            overflow: hidden;
+        }
+        table.apple-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--text-subhead);
+            color: var(--text-primary);
+        }
+        .apple-table thead th {
+            text-align: left;
+            padding: var(--space-4) var(--space-4);
+            font-size: var(--text-footnote);
+            font-weight: var(--weight-semibold);
+            color: var(--text-secondary);
+            letter-spacing: 0.1px;
+            background: var(--bg-tertiary);
+            border-bottom: 0.5px solid var(--separator);
+            white-space: nowrap;
+        }
+        .apple-table tbody td {
+            padding: var(--space-4) var(--space-4);
+            border-bottom: 0.5px solid var(--separator);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .apple-table tbody tr:last-child td { border-bottom: none; }
+        .apple-table tbody tr {
+            transition: background var(--duration-fast) var(--ease-standard);
+        }
+        .apple-table tbody tr:hover { background: var(--bg-tertiary); }
+
+        .col-index { color: var(--text-tertiary); font-variant-numeric: tabular-nums; width: 48px; }
+        .col-amount { font-variant-numeric: tabular-nums; font-weight: var(--weight-semibold); }
+        .col-date { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+        .col-actions { text-align: right; }
+
+        .pay-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-size: var(--text-caption-1);
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: var(--radius-xs);
+            background: rgba(0, 113, 227, 0.06);
+            transition: background var(--duration-fast) var(--ease-standard);
+        }
+        .pay-link:hover { background: rgba(0, 113, 227, 0.12); }
+        .pay-link svg { width: 12px; height: 12px; opacity: 0.7; }
+
+        .pay-btn-cell { color: var(--text-tertiary); }
+        .pay-btn-arrow { color: var(--apple-red); margin-left: 4px; }
+
+        .row-action {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: var(--text-subhead);
+            font-weight: var(--weight-regular);
+            cursor: pointer;
+            transition: opacity var(--duration-fast) var(--ease-standard);
+        }
+        .row-action + .row-action { margin-left: var(--space-4); }
+        .row-action:hover { opacity: 0.7; }
+        .row-action.is-link { color: var(--accent); }
+        .row-action.is-danger { color: var(--danger); }
+
+        /* ---- Responsive ------------------------------------------------ */
+        @media (max-width: 900px) {
+            .app { grid-template-columns: 64px 1fr; }
+            .sidebar { padding: var(--space-3) var(--space-2); }
+            .nav-link span, .nav-group-toggle span, .nav-sub { display: none; }
+            .nav-link, .nav-group-toggle { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+
+        <!-- ============================================================
+             TOP BAR
+             ============================================================ -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="topbar-home" aria-label="首页">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l7-6 7 6v8a1 1 0 0 1-1 1h-4v-6H8v6H4a1 1 0 0 1-1-1z"/>
+                    </svg>
+                </button>
+                <div class="brand">
+                    <span class="brand-mark"></span>
+                    Gate Pay
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="apple-btn apple-btn-secondary apple-btn-sm">充值</button>
+                <span class="topbar-divider"></span>
+                <button class="icon-btn" aria-label="语言">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="10" cy="10" r="7"/><path d="M3 10h14M10 3a11 11 0 0 1 0 14M10 3a11 11 0 0 0 0 14"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="通知">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 8a5 5 0 0 1 10 0v4l1.5 2H3.5L5 12z"/><path d="M8 16a2 2 0 0 0 4 0"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="设置">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="10" cy="10" r="2.4"/><path d="M16.4 12.2l1.3.7-1.3 2.2-1.4-.5a6 6 0 0 1-1.6.9l-.3 1.5h-2.6l-.3-1.5a6 6 0 0 1-1.6-.9l-1.4.5L6 13l1.3-.7a6 6 0 0 1 0-1.7L6 9.9l1.3-2.3 1.4.6a6 6 0 0 1 1.6-1l.3-1.5h2.6l.3 1.5a6 6 0 0 1 1.6 1l1.4-.6 1.3 2.3-1.3.7a6 6 0 0 1 0 1.7z"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="主题">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 11a5 5 0 0 1-7-7 7 7 0 1 0 7 7z"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="账户">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="10" cy="7" r="3"/><path d="M3.5 17a6.5 6.5 0 0 1 13 0"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ============================================================
+             SIDEBAR
+             ============================================================ -->
+        <aside class="sidebar">
+            <ul class="nav">
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10l7-6 7 6v7H3z"/></svg><span>开始使用</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 8h14"/></svg><span>商家管理平台</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h12M4 10h12M4 14h8"/></svg><span>交易订单</span></a></li>
+
+                <li class="nav-item">
+                    <div class="nav-group-toggle">
+                        <svg class="lead" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h14v9H3z"/><path d="M7 7V5h6v2"/></svg>
+                        <span>收款</span>
+                        <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2l4 4-4 4"/></svg>
+                    </div>
+                    <ul class="nav-sub">
+                        <li><a class="nav-link is-active"><span>收款链接</span></a></li>
+                        <li><a class="nav-link"><span>静态收款码</span></a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="7" r="3"/><path d="M3.5 17a6.5 6.5 0 0 1 13 0"/></svg><span>账户</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><path d="M10 6v4l3 2"/></svg><span>系统管理</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 5l-4 5 4 5M13 5l4 5-4 5"/></svg><span>开发者中心</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7"/><path d="M7 10h6M10 7v6"/></svg><span>支付币种配置</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="14" height="10" rx="1.5"/><path d="M3 9h14M10 6v10"/></svg><span>礼品卡</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3l2 4 4 .6-3 3 .8 4.4L10 13l-3.8 2 .8-4.4-3-3L8 7z"/></svg><span>角色权限管理</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="7" r="3"/><path d="M4 17a6 6 0 0 1 12 0"/></svg><span>客服管理</span></a></li>
+                <li class="nav-item"><a class="nav-link"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="14" height="10" rx="1.5"/><path d="M6 9h8M6 12h5"/></svg><span>白标收银台设置</span></a></li>
+            </ul>
+        </aside>
+
+        <!-- ============================================================
+             MAIN
+             ============================================================ -->
+        <main class="main">
+            <div class="page-head">
+                <h1>收款链接</h1>
+                <div class="page-actions">
+                    <button class="apple-btn apple-btn-secondary apple-btn-sm">客户渠道</button>
+                    <button class="apple-btn apple-btn-primary apple-btn-sm">新建</button>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <table class="apple-table">
+                    <thead>
+                        <tr>
+                            <th class="col-index">序号</th>
+                            <th>客户渠道</th>
+                            <th>创建日期</th>
+                            <th>产品名称</th>
+                            <th>支付链接</th>
+                            <th>订单金额</th>
+                            <th>二维码状态</th>
+                            <th>付款按钮</th>
+                            <th class="col-actions">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-index">1</td>
+                            <td>test</td>
+                            <td class="col-date">2025-04-01 10:04:39</td>
+                            <td>永久</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">1 USDT</td>
+                            <td><span class="apple-badge apple-badge-success">有效（永久有效）</span></td>
+                            <td class="pay-btn-cell">— <span class="pay-btn-arrow">↗</span></td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-index">2</td>
+                            <td>test</td>
+                            <td class="col-date">2025-03-27 18:29:50</td>
+                            <td>test111</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">33 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效（24小时有效）</span></td>
+                            <td class="pay-btn-cell">—</td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-index">3</td>
+                            <td>test</td>
+                            <td class="col-date">2025-03-26 12:19:14</td>
+                            <td>111</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">12 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效（24小时有效）</span></td>
+                            <td class="pay-btn-cell">—</td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-index">4</td>
+                            <td>test</td>
+                            <td class="col-date">2025-03-25 12:11:36</td>
+                            <td>test11</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">1.1 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效（24小时有效）</span></td>
+                            <td class="pay-btn-cell">—</td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-index">5</td>
+                            <td>test</td>
+                            <td class="col-date">2025-03-24 12:01:09</td>
+                            <td>test2</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">3 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效（24小时有效）</span></td>
+                            <td class="pay-btn-cell">—</td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-index">6</td>
+                            <td>test</td>
+                            <td class="col-date">2025-03-24 08:44:15</td>
+                            <td>test3</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">1 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效（1小时有效）</span></td>
+                            <td class="pay-btn-cell">—</td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-index">7</td>
+                            <td>test</td>
+                            <td class="col-date">2025-03-20 22:50:43</td>
+                            <td>1</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">0.88 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效（1小时有效）</span></td>
+                            <td class="pay-btn-cell">—</td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-index">8</td>
+                            <td>test</td>
+                            <td class="col-date">2025-03-20 18:59:36</td>
+                            <td>1</td>
+                            <td><a class="pay-link" href="#">https://www.gate.io/pay-code?qrcod… <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8L8 4M5 4h3v3"/></svg></a></td>
+                            <td class="col-amount">1 USDT</td>
+                            <td><span class="apple-badge apple-badge-neutral">无效（1小时有效）</span></td>
+                            <td class="pay-btn-cell">—</td>
+                            <td class="col-actions">
+                                <button class="row-action is-link">查看二维码</button>
+                                <button class="row-action is-danger">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
