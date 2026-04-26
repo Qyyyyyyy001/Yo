@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="apple-design-system.css">
 <style>
     :root {
-        --page-bg: #ffffff;
+        --page-bg: #f5f5f7;
         --ink: #1d1d1f;
         --muted: #6e6e73;
         --accent: #007aff;
@@ -32,7 +32,7 @@
         z-index: 50;
         backdrop-filter: saturate(180%) blur(20px);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
-        background: rgba(255, 255, 255, 0.82);
+        background: rgba(245, 245, 247, 0.82);
         border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
     .topbar-inner {
@@ -62,22 +62,45 @@
     }
     .topbar a.download:hover { background: rgba(0, 122, 255, 0.16); }
 
+    .hero {
+        text-align: center;
+        padding: 80px 24px 56px;
+        max-width: 880px;
+        margin: 0 auto;
+    }
+    .hero h1 {
+        font-size: clamp(40px, 6vw, 64px);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin: 0 0 12px;
+        line-height: 1.05;
+    }
+    .hero p {
+        font-size: clamp(17px, 2.4vw, 21px);
+        color: var(--muted);
+        margin: 0;
+        font-weight: 400;
+    }
+
     .gallery {
         max-width: 1080px;
-        margin: 0 auto;
-        padding: 0;
-        display: block;
+        margin: 0 auto 80px;
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.04),
+            0 8px 32px rgba(0, 0, 0, 0.08);
     }
     .page-card {
         position: relative;
-        background: #fff;
-        overflow: hidden;
+        display: block;
+        font-size: 0;
     }
     .page-card img {
         display: block;
         width: 100%;
         height: auto;
-        background: #fff;
     }
     .page-num {
         position: absolute;
@@ -107,21 +130,26 @@
     }
     footer a { color: var(--accent); text-decoration: none; }
 
+    @media (max-width: 1128px) {
+        .gallery { margin: 0 24px 80px; }
+    }
     @media (max-width: 640px) {
         .topbar-inner { padding: 12px 16px; }
         .brand { font-size: 14px; }
         .brand .sub { display: none; }
+        .hero { padding: 56px 20px 40px; }
+        .gallery { margin: 0 16px 56px; border-radius: 12px; }
         .page-num { opacity: 1; }
     }
 
     @media (prefers-color-scheme: dark) {
         :root {
-            --page-bg: #1c1c1e;
+            --page-bg: #000;
             --ink: #f5f5f7;
             --muted: #8e8e93;
         }
-        .topbar { background: rgba(28, 28, 30, 0.82); border-bottom-color: rgba(255, 255, 255, 0.08); }
-        .page-card { background: #1c1c1e; }
+        .topbar { background: rgba(0, 0, 0, 0.72); border-bottom-color: rgba(255, 255, 255, 0.08); }
+        .gallery { background: #1c1c1e; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
         footer { border-top-color: rgba(255, 255, 255, 0.08); }
     }
 </style>
@@ -134,6 +162,11 @@
         <a class="download" href="https://github.com/Qyyyyyyy001/Yo/releases/download/123/Yang.Qiu.2026.pdf.pdf" download>下载 PDF</a>
     </div>
 </header>
+
+<section class="hero">
+    <h1>Yang Qiu</h1>
+    <p>Portfolio · 2026</p>
+</section>
 
 <main class="gallery">
     <div class="page-card"><img src="pages/page-01.jpg" alt="Page 1" loading="eager" decoding="async"><span class="page-num">01 / 43</span></div>
