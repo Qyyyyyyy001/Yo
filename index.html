@@ -4,98 +4,219 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Yang Qiu · Portfolio 2026</title>
+<meta name="description" content="Yang Qiu — Portfolio 2026">
 <link rel="stylesheet" href="apple-design-system.css">
 <style>
-    body {
-        margin: 0;
-        background: var(--bg-primary, #f5f5f7);
+    :root {
+        --page-bg: #f5f5f7;
+        --ink: #1d1d1f;
+        --muted: #6e6e73;
+        --accent: #007aff;
     }
+    * { box-sizing: border-box; }
+    html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--page-bg);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+                     "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+                     "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        background: rgba(245, 245, 247, 0.82);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .topbar-inner {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    .brand {
+        font-weight: 600;
+        font-size: 15px;
+        letter-spacing: -0.01em;
+    }
+    .brand .sep { color: var(--muted); margin: 0 8px; font-weight: 400; }
+    .brand .sub { color: var(--muted); font-weight: 400; }
+    .topbar a.download {
+        font-size: 13px;
+        color: var(--accent);
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 980px;
+        background: rgba(0, 122, 255, 0.08);
+        transition: background 0.15s ease;
+    }
+    .topbar a.download:hover { background: rgba(0, 122, 255, 0.16); }
+
     .hero {
         text-align: center;
-        padding: 64px 24px 32px;
+        padding: 80px 24px 56px;
         max-width: 880px;
         margin: 0 auto;
     }
     .hero h1 {
-        font-size: 44px;
+        font-size: clamp(40px, 6vw, 64px);
         font-weight: 700;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.025em;
         margin: 0 0 12px;
-        color: var(--text-primary, #1d1d1f);
+        line-height: 1.05;
     }
     .hero p {
-        font-size: 19px;
-        color: var(--text-secondary, #6e6e73);
-        margin: 0 0 28px;
+        font-size: clamp(17px, 2.4vw, 21px);
+        color: var(--muted);
+        margin: 0;
+        font-weight: 400;
     }
-    .actions {
+
+    .gallery {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
         display: flex;
-        gap: 12px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 40px;
+        flex-direction: column;
+        gap: 28px;
     }
-    .viewer-wrap {
-        max-width: 1120px;
-        margin: 0 auto 64px;
-        padding: 0 24px;
-    }
-    .viewer {
-        width: 100%;
-        height: 86vh;
-        min-height: 640px;
-        border: 0;
-        border-radius: 18px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    .page-card {
+        position: relative;
         background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.04),
+            0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+    .page-card img {
         display: block;
+        width: 100%;
+        height: auto;
+        background: #fff;
     }
-    .fallback {
-        text-align: center;
-        padding: 48px 24px;
-        color: var(--text-secondary, #6e6e73);
-        font-size: 15px;
+    .page-num {
+        position: absolute;
+        bottom: 12px;
+        right: 14px;
+        padding: 4px 10px;
+        border-radius: 980px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        font-variant-numeric: tabular-nums;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
+    .page-card:hover .page-num { opacity: 1; }
+
     footer {
         text-align: center;
-        padding: 32px 24px 48px;
+        padding: 40px 24px 64px;
+        color: var(--muted);
         font-size: 13px;
-        color: var(--text-secondary, #6e6e73);
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
     }
-    footer a {
-        color: var(--apple-blue, #007aff);
-        text-decoration: none;
-    }
+    footer a { color: var(--accent); text-decoration: none; }
+
     @media (max-width: 640px) {
-        .hero { padding: 40px 20px 24px; }
-        .hero h1 { font-size: 32px; }
-        .hero p { font-size: 16px; }
-        .viewer { height: 70vh; min-height: 480px; border-radius: 14px; }
+        .topbar-inner { padding: 12px 16px; }
+        .brand { font-size: 14px; }
+        .brand .sub { display: none; }
+        .hero { padding: 56px 20px 40px; }
+        .gallery { padding: 0 16px 56px; gap: 20px; }
+        .page-card { border-radius: 12px; }
+        .page-num { opacity: 1; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --page-bg: #000;
+            --ink: #f5f5f7;
+            --muted: #8e8e93;
+        }
+        .topbar { background: rgba(0, 0, 0, 0.72); border-bottom-color: rgba(255, 255, 255, 0.08); }
+        .page-card { background: #1c1c1e; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
+        footer { border-top-color: rgba(255, 255, 255, 0.08); }
     }
 </style>
 </head>
 <body>
 
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="brand">Yang Qiu<span class="sep">·</span><span class="sub">Portfolio 2026</span></div>
+        <a class="download" href="https://github.com/Qyyyyyyy001/Yo/releases/download/123/Yang.Qiu.2026.pdf.pdf" download>下载 PDF</a>
+    </div>
+</header>
+
 <section class="hero">
     <h1>Yang Qiu</h1>
     <p>Portfolio · 2026</p>
-    <div class="actions">
-        <a class="apple-btn apple-btn-primary" href="portfolio.pdf" target="_blank" rel="noopener">在新标签打开</a>
-        <a class="apple-btn apple-btn-secondary" href="portfolio.pdf" download="Yang-Qiu-Portfolio-2026.pdf">下载 PDF</a>
-    </div>
 </section>
 
-<div class="viewer-wrap">
-    <object class="viewer" data="portfolio.pdf" type="application/pdf">
-        <iframe class="viewer" src="portfolio.pdf" title="Yang Qiu Portfolio 2026"></iframe>
-        <div class="fallback">
-            你的浏览器无法嵌入预览 PDF。请点击上方"在新标签打开"或"下载 PDF"。
-        </div>
-    </object>
-</div>
+<main class="gallery">
+    <div class="page-card"><img src="pages/page-01.jpg" alt="Page 1" loading="eager" decoding="async"><span class="page-num">01 / 43</span></div>
+    <div class="page-card"><img src="pages/page-02.jpg" alt="Page 2" loading="eager" decoding="async"><span class="page-num">02 / 43</span></div>
+    <div class="page-card"><img src="pages/page-03.jpg" alt="Page 3" loading="lazy" decoding="async"><span class="page-num">03 / 43</span></div>
+    <div class="page-card"><img src="pages/page-04.jpg" alt="Page 4" loading="lazy" decoding="async"><span class="page-num">04 / 43</span></div>
+    <div class="page-card"><img src="pages/page-05.jpg" alt="Page 5" loading="lazy" decoding="async"><span class="page-num">05 / 43</span></div>
+    <div class="page-card"><img src="pages/page-06.jpg" alt="Page 6" loading="lazy" decoding="async"><span class="page-num">06 / 43</span></div>
+    <div class="page-card"><img src="pages/page-07.jpg" alt="Page 7" loading="lazy" decoding="async"><span class="page-num">07 / 43</span></div>
+    <div class="page-card"><img src="pages/page-08.jpg" alt="Page 8" loading="lazy" decoding="async"><span class="page-num">08 / 43</span></div>
+    <div class="page-card"><img src="pages/page-09.jpg" alt="Page 9" loading="lazy" decoding="async"><span class="page-num">09 / 43</span></div>
+    <div class="page-card"><img src="pages/page-10.jpg" alt="Page 10" loading="lazy" decoding="async"><span class="page-num">10 / 43</span></div>
+    <div class="page-card"><img src="pages/page-11.jpg" alt="Page 11" loading="lazy" decoding="async"><span class="page-num">11 / 43</span></div>
+    <div class="page-card"><img src="pages/page-12.jpg" alt="Page 12" loading="lazy" decoding="async"><span class="page-num">12 / 43</span></div>
+    <div class="page-card"><img src="pages/page-13.jpg" alt="Page 13" loading="lazy" decoding="async"><span class="page-num">13 / 43</span></div>
+    <div class="page-card"><img src="pages/page-14.jpg" alt="Page 14" loading="lazy" decoding="async"><span class="page-num">14 / 43</span></div>
+    <div class="page-card"><img src="pages/page-15.jpg" alt="Page 15" loading="lazy" decoding="async"><span class="page-num">15 / 43</span></div>
+    <div class="page-card"><img src="pages/page-16.jpg" alt="Page 16" loading="lazy" decoding="async"><span class="page-num">16 / 43</span></div>
+    <div class="page-card"><img src="pages/page-17.jpg" alt="Page 17" loading="lazy" decoding="async"><span class="page-num">17 / 43</span></div>
+    <div class="page-card"><img src="pages/page-18.jpg" alt="Page 18" loading="lazy" decoding="async"><span class="page-num">18 / 43</span></div>
+    <div class="page-card"><img src="pages/page-19.jpg" alt="Page 19" loading="lazy" decoding="async"><span class="page-num">19 / 43</span></div>
+    <div class="page-card"><img src="pages/page-20.jpg" alt="Page 20" loading="lazy" decoding="async"><span class="page-num">20 / 43</span></div>
+    <div class="page-card"><img src="pages/page-21.jpg" alt="Page 21" loading="lazy" decoding="async"><span class="page-num">21 / 43</span></div>
+    <div class="page-card"><img src="pages/page-22.jpg" alt="Page 22" loading="lazy" decoding="async"><span class="page-num">22 / 43</span></div>
+    <div class="page-card"><img src="pages/page-23.jpg" alt="Page 23" loading="lazy" decoding="async"><span class="page-num">23 / 43</span></div>
+    <div class="page-card"><img src="pages/page-24.jpg" alt="Page 24" loading="lazy" decoding="async"><span class="page-num">24 / 43</span></div>
+    <div class="page-card"><img src="pages/page-25.jpg" alt="Page 25" loading="lazy" decoding="async"><span class="page-num">25 / 43</span></div>
+    <div class="page-card"><img src="pages/page-26.jpg" alt="Page 26" loading="lazy" decoding="async"><span class="page-num">26 / 43</span></div>
+    <div class="page-card"><img src="pages/page-27.jpg" alt="Page 27" loading="lazy" decoding="async"><span class="page-num">27 / 43</span></div>
+    <div class="page-card"><img src="pages/page-28.jpg" alt="Page 28" loading="lazy" decoding="async"><span class="page-num">28 / 43</span></div>
+    <div class="page-card"><img src="pages/page-29.jpg" alt="Page 29" loading="lazy" decoding="async"><span class="page-num">29 / 43</span></div>
+    <div class="page-card"><img src="pages/page-30.jpg" alt="Page 30" loading="lazy" decoding="async"><span class="page-num">30 / 43</span></div>
+    <div class="page-card"><img src="pages/page-31.jpg" alt="Page 31" loading="lazy" decoding="async"><span class="page-num">31 / 43</span></div>
+    <div class="page-card"><img src="pages/page-32.jpg" alt="Page 32" loading="lazy" decoding="async"><span class="page-num">32 / 43</span></div>
+    <div class="page-card"><img src="pages/page-33.jpg" alt="Page 33" loading="lazy" decoding="async"><span class="page-num">33 / 43</span></div>
+    <div class="page-card"><img src="pages/page-34.jpg" alt="Page 34" loading="lazy" decoding="async"><span class="page-num">34 / 43</span></div>
+    <div class="page-card"><img src="pages/page-35.jpg" alt="Page 35" loading="lazy" decoding="async"><span class="page-num">35 / 43</span></div>
+    <div class="page-card"><img src="pages/page-36.jpg" alt="Page 36" loading="lazy" decoding="async"><span class="page-num">36 / 43</span></div>
+    <div class="page-card"><img src="pages/page-37.jpg" alt="Page 37" loading="lazy" decoding="async"><span class="page-num">37 / 43</span></div>
+    <div class="page-card"><img src="pages/page-38.jpg" alt="Page 38" loading="lazy" decoding="async"><span class="page-num">38 / 43</span></div>
+    <div class="page-card"><img src="pages/page-39.jpg" alt="Page 39" loading="lazy" decoding="async"><span class="page-num">39 / 43</span></div>
+    <div class="page-card"><img src="pages/page-40.jpg" alt="Page 40" loading="lazy" decoding="async"><span class="page-num">40 / 43</span></div>
+    <div class="page-card"><img src="pages/page-41.jpg" alt="Page 41" loading="lazy" decoding="async"><span class="page-num">41 / 43</span></div>
+    <div class="page-card"><img src="pages/page-42.jpg" alt="Page 42" loading="lazy" decoding="async"><span class="page-num">42 / 43</span></div>
+    <div class="page-card"><img src="pages/page-43.jpg" alt="Page 43" loading="lazy" decoding="async"><span class="page-num">43 / 43</span></div>
+</main>
 
 <footer>
-    © 2026 Yang Qiu · <a href="design-system.html">Design System</a>
+    © 2026 Yang Qiu · <a href="https://github.com/Qyyyyyyy001/Yo/releases/download/123/Yang.Qiu.2026.pdf.pdf" download>下载完整 PDF</a> · <a href="design-system.html">Design System</a>
 </footer>
 
 </body>
